@@ -1,6 +1,6 @@
 require 'nokogiri'
 require 'redirect_follower'
-require "addressable/uri"
+require 'addressable/uri'
 require 'uri'
 
 class OpenGraph
@@ -21,6 +21,7 @@ class OpenGraph
   end
 
   private
+
   def parse_opengraph(options = {})
     begin
       if @src.include? '</html>'
@@ -33,57 +34,58 @@ class OpenGraph
       return
     end
 
-    if @body
-      attrs_list = %w(title url type description)
-      doc = Nokogiri.parse(@body)
-      doc.css('meta').each do |m|
-        if m.attribute('property') && m.attribute('property').to_s.match(/^og:(.+)$/i)
-          m_content = m.attribute('content').to_s.strip
-          metadata_name = m.attribute('property').to_s.gsub("og:", "")
-          @metadata = add_metadata(@metadata, metadata_name, m_content)
-          case metadata_name
-            when *attrs_list
-              self.instance_variable_set("@#{metadata_name}", m_content) unless m_content.empty?
-            when "image"
-              add_image(m_content)
-          end
-        end
+    return unless @body
+
+    attrs_list = %w(title url type description)
+    doc = Nokogiri.parse(@body)
+    doc.css('meta').each do |m|
+      next unless m.attribute('property') && m.attribute('property').to_s.match(/^og:(.+)$/i)
+      m_content = m.attribute('content').to_s.strip
+      metadata_name = m.attribute('property').to_s.gsub('og:', '')
+      @metadata = add_metadata(@metadata, metadata_name, m_content)
+      case metadata_name
+      when 'image'
+        add_image(m_content)
+      when *attrs_list
+        instance_variable_set("@#{metadata_name}", m_content) unless m_content.empty?
       end
     end
   end
 
   def load_fallback
-    if @body
-      doc = Nokogiri.parse(@body)
+    return unless @body
 
-      if @title.to_s.empty? && doc.xpath("//head//title").size > 0
-        @title = doc.xpath("//head//title").first.text.to_s.strip
-      end
+    doc = Nokogiri.parse(@body)
 
-      @url = @src if @url.to_s.empty?
-
-      if @description.to_s.empty? && description_meta = doc.xpath("//head//meta[@name='description']").first
-        @description = description_meta.attribute("content").to_s.strip
-      end
-
-      if @description.to_s.empty?
-        @description = fetch_first_text(doc)
-      end
-
-      fetch_images(doc, "//head//link[@rel='image_src']", "href") if @images.empty?
-      fetch_images(doc, "//img", "src") if @images.empty?
+    if @title.to_s.empty? && doc.xpath('//head//title').size > 0
+      @title = doc.xpath('//head//title').first.text.to_s.strip
     end
+
+    @url = @src if @url.to_s.empty?
+
+    if @description.to_s.empty? && description_meta = doc.xpath("//head//meta[@name='description']").first
+      @description = description_meta.attribute('content').to_s.strip
+    end
+
+    @description = fetch_first_text(doc) if @description.to_s.empty?
+
+    fetch_images(doc, "//head//link[@rel='image_src']", 'href') if @images.empty?
+    fetch_images(doc, '//img', 'src') if @images.empty?
   end
 
   def check_images_path
     @original_images = @images.dup
-    uri = Addressable::URI.parse(@src)
     imgs = @images.dup
     @images = []
     imgs.each do |img|
       if Addressable::URI.parse(img).host.nil?
-        full_path = uri.join(img).to_s
-        add_image(full_path)
+        if @src =~ /\A#{URI.regexp}\z/
+          uri = Addressable::URI.parse(@src)
+          full_path = uri.join(img).to_s
+          add_image(full_path)
+        else
+          add_image(img)
+        end
       else
         add_image(img)
       end
@@ -124,7 +126,7 @@ class OpenGraph
       end
     else
       metadata_container[path.to_sym] ||= []
-      metadata_container[path.to_sym] << {'_value'.to_sym => content}
+      metadata_container[path.to_sym] << { '_value'.to_sym => content }
       metadata_container
     end
   end

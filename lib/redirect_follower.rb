@@ -11,12 +11,13 @@ class RedirectFollower
       options = limit
       limit = REDIRECT_DEFAULT_LIMIT
     end
-    @url, @redirect_limit = url, limit
+    @url = url
+    @redirect_limit = limit
     @headers = options[:headers] || {}
   end
 
   def resolve
-    raise TooManyRedirects if redirect_limit < 0
+    fail TooManyRedirects if redirect_limit < 0
 
     uri = URI.parse(URI.escape(url))
 
@@ -28,7 +29,7 @@ class RedirectFollower
 
     self.response = http.request_get(uri.request_uri, @headers)
 
-    if response.kind_of?(Net::HTTPRedirection)
+    if response.is_a?(Net::HTTPRedirection)
       self.url = redirect_url
       self.redirect_limit -= 1
       resolve

@@ -12,9 +12,6 @@ doc
 # bundler
 .bundle
 
-# jeweler generated
-pkg
-
 # Have editor/IDE/OS specific files you need to ignore? Consider using a global gitignore: 
 #
 # * Create a file at ~/.gitignore
@@ -47,3 +44,6 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+# Ignore Byebug command history file.
+.byebug_history

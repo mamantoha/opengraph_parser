@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib/'))
+
+require 'json'
+require 'uri'
+require 'opengraph_parser'
+
+url = ARGV[0]
+
+def usage
+  puts 'Usage: opengraph [url]'
+  puts 'Shows the Open Graph information of the given website, using the opengraph_parser gem.'
+end
+
+if url.nil? || url.empty?
+  usage
+elsif url =~ /\A#{URI.regexp(%w(http https))}\z/
+  og = OpenGraph.new(url)
+  data = og.metadata
+  puts(data.nil? || data == false) ? 'No (valid) Open Graph tags found.' : JSON.pretty_generate(data)
+else
+  puts 'Invalid url...'
+  exit 1
+end
+
+# vi:syntax=ruby
