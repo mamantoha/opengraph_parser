@@ -25,12 +25,11 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.summary = 'A simple Ruby library for parsing Open Graph Protocol information from a website.'
 
-  s.add_dependency('nokogiri')
-  s.add_dependency('addressable')
+  s.add_dependency 'nokogiri'
+  s.add_dependency 'addressable'
 
-  s.add_development_dependency 'bundler', '~> 1.9'
-  s.add_development_dependency 'rake', '~> 10.0'
-  s.add_development_dependency 'rspec", "~> 3.2'
-  s.add_development_dependency('rdoc')
-  s.add_development_dependency('bundler')
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rdoc'
 end

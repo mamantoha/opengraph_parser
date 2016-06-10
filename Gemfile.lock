@@ -9,7 +9,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.4.0)
-    byebug (9.0.5)
     diff-lcs (1.2.5)
     json (1.8.3)
     mini_portile2 (2.1.0)
@@ -39,11 +38,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  byebug
   opengraph_parser!
   rake
   rdoc
-  rspec (~> 3.2)
+  rspec
 
 BUNDLED WITH
-   1.12.2
+   1.11.2
