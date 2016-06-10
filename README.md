@@ -31,7 +31,7 @@ og.images # => ["http://ogp.me/logo.png"]
 You can also get other Open Graph metadata as:
 
 ```ruby
-og.metadata # => {"og:image:type"=>"image/png", "og:image:width"=>"300", "og:image:height"=>"300"}
+og.metadata # => {:title=>[{:_value=>"Open Graph protocol"}], :type=>[{:_value=>"website"}], :url=>[{:_value=>"http://ogp.me/"}], :image=>[{:_value=>"http://ogp.me/logo.png", :type=>[{:_value=>"image/png"}], :width=>[{:_value=>"300"}], :height=>[{:_value=>"300"}]}], :description=>[{:_value=>"The Open Graph protocol enables any web page to become a rich object in a social graph."}]}
 ```
 
 ### Parsing a HTML document
