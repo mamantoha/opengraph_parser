@@ -71,4 +71,4 @@ og = OpenGraph.new("http://ogp.me", false)
 
 ## Copyright
 
-Copyright (c) 2013 Huy Ha. See LICENSE.txt for further details.
+Copyright (c) 2013-2016 Huy Ha. See LICENSE.txt for further details.
