@@ -17,7 +17,7 @@ class RedirectFollower
   end
 
   def resolve
-    fail TooManyRedirects if redirect_limit < 0
+    raise TooManyRedirects if redirect_limit < 0
 
     uri = URI.parse(URI.escape(url))
 

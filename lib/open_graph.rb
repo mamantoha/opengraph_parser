@@ -24,11 +24,11 @@ class OpenGraph
 
   def parse_opengraph(options = {})
     begin
-      if @src.include? '</html>'
-        @body = @src
-      else
-        @body = RedirectFollower.new(@src, options).resolve.body
-      end
+      @body = if @src.include? '</html>'
+                @src
+              else
+                RedirectFollower.new(@src, options).resolve.body
+              end
     rescue
       @title = @url = @src
       return
@@ -57,7 +57,7 @@ class OpenGraph
 
     doc = Nokogiri.parse(@body)
 
-    if @title.to_s.empty? && doc.xpath('//head//title').size > 0
+    if @title.to_s.empty? && !doc.xpath('//head//title').empty?
       @title = doc.xpath('//head//title').first.text.to_s.strip
     end
 
@@ -118,16 +118,15 @@ class OpenGraph
         path_pointer = metadata_container[current_element.to_sym].last
         index_count = metadata_container[current_element.to_sym].size
         metadata_container[current_element.to_sym][index_count - 1] = add_metadata(path_pointer, path, content)
-        metadata_container
       else
         metadata_container[current_element.to_sym] = []
         metadata_container[current_element.to_sym] << add_metadata({}, path, content)
-        metadata_container
       end
     else
       metadata_container[path.to_sym] ||= []
       metadata_container[path.to_sym] << { '_value'.to_sym => content }
-      metadata_container
     end
+
+    metadata_container
   end
 end
