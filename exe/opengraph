@@ -17,7 +17,7 @@ if url.nil? || url.empty?
 elsif url =~ /\A#{URI.regexp(%w(http https))}\z/
   og = OpenGraph.new(url)
   data = og.metadata
-  puts(data.nil? || data == false) ? 'No (valid) Open Graph tags found.' : JSON.pretty_generate(data)
+  puts (data.nil? || data == false) ? 'No (valid) Open Graph tags found.' : JSON.pretty_generate(data)
 else
   puts 'Invalid url...'
   exit 1
