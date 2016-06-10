@@ -16,6 +16,7 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     pkg-config (1.1.7)
+    rake (11.1.2)
     rdoc (4.2.2)
       json (~> 1.4)
     rspec (3.4.0)
@@ -38,8 +39,9 @@ PLATFORMS
 DEPENDENCIES
   bundler
   opengraph_parser!
+  rake
   rdoc
-  rspec
+  rspec (~> 3.2)
 
 BUNDLED WITH
-   1.11.2
+   1.12.2
